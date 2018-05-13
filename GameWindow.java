@@ -377,41 +377,11 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener {
 		//And then empty the currentElement ArrayList to obtain a new Element
 		else {
 			//Create a boolean to assert whether or not we can make a down movement or if we have to Fix it in place.
-			Boolean movePossible = true;
-			
-			for(Block block: currentElement) {
-				int row = block.getRow();
-				int col = block.getCol();
-				
-				//Check whether or not there is a moving element in the last row.
-				if(row == 21) {
-					movePossible = false;
-					break;
-				}
-				
-				try{
-					if(panelField[row + 1][col] != null && !(panelField[row + 1][col].isMoving())) {
-						movePossible = false;
-						break;
-					}
-				} catch(NullPointerException e) {
-					continue;
-				}
-			}
+			Boolean movePossible = movePossible();
 			
 			//If movepossible is still true then move all blocks in currentelement one field down otherwise fix it in position by removing it from Currentelement
 			if(movePossible) {
-				for(int r = 1; r < 22; r++) {
-					for(int col = 0; col < 10; col++) {
-						if(panelField[21-r][col] != null && panelField[21-r][col].isMoving()) {
-							panelField[21-r+1][col] = panelField[21-r][col];
-							panelField[21-r][col] = null;
-							
-							//Increment the row coordinate of the block by 1
-							panelField[21-r+1][col].moveDown();
-						}
-					}
-				}
+				moveDown();
 			}
 			
 			else {
@@ -665,5 +635,48 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener {
 		}
 		currentElement = restoreElement;
 		return temp;
+	}
+	
+	public void moveDown() {
+		
+		for(int r = 1; r < 22; r++) {
+			for(int col = 0; col < 10; col++) {
+				if(panelField[21-r][col] != null && panelField[21-r][col].isMoving()) {
+					panelField[21-r+1][col] = panelField[21-r][col];
+					panelField[21-r][col] = null;
+					
+					//Increment the row coordinate of the block by 1
+					panelField[21-r+1][col].moveDown();
+				}
+			}
+		}
+		
+	}
+	
+	public boolean movePossible() {
+		
+		Boolean movePossible = true;
+		
+		for(Block block: currentElement) {
+			int row = block.getRow();
+			int col = block.getCol();
+			
+			//Check whether or not there is a moving element in the last row.
+			if(row == 21) {
+				movePossible = false;
+				break;
+			}
+			
+			try{
+				if(panelField[row + 1][col] != null && !(panelField[row + 1][col].isMoving())) {
+					movePossible = false;
+					break;
+				}
+			} catch(NullPointerException e) {
+				continue;
+			}
+		}
+		
+		return movePossible;
 	}
 }
