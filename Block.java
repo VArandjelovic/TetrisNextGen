@@ -8,6 +8,9 @@ public class Block{
 	//Boolean wether the Block is currently part of a Tetris block in Movement
 	private boolean moving;
 	
+	//Used for rotating
+	private boolean marked = false;
+	
 	//The Type of Element the Block belongs to
 	//0: I Cyan
 	//1: J Blue
@@ -20,9 +23,9 @@ public class Block{
 	
 	//Rotation state used for determining which algorithm to use
 	//0: starting position
-	//1: one rotating right or three left
+	//1: one rotation right or three left
 	//2: 180 degree rotation
-	//3: one left rotating or three right rotations
+	//3: one left rotation or three right rotations
 	private int rotationstate;
 	
 	//Constructor
@@ -97,7 +100,7 @@ public class Block{
 	
 	//updates the rotationstate upon right rotation
 	public void rotateRight() {
-		rotationstate = (rotationstate + 1) % 3;
+		rotationstate = (rotationstate + 1) % 4;
 	}
 	
 	//get the rotation state
@@ -114,5 +117,12 @@ public class Block{
 	public void setCol(int c) {
 		colcord = c;
 	}
-
+	
+	public void setMarked(boolean i) {
+		this.marked = i;
+	}
+	
+	public boolean isMarked() {
+		return marked;
+	}
 }
